@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "auster-example",
+    "auster-macros",
+    "auster-integer",
+]
