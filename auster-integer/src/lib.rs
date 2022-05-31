@@ -1,6 +1,5 @@
 #![allow(unused)]
 
-
 pub(crate) mod bin_utils;
 pub(crate) mod utils;
 
@@ -8,7 +7,12 @@ pub(crate) mod utils;
 mod tests {
     use std::vec;
 
-    use crate::bin_utils::{bitwise_ops::{twos_complement, ones_complement, bitwise_and, bitwise_or, bitwise_xor, bitwise_not}, conversion::convert_from_decimal};
+    use crate::bin_utils::{
+        bitwise_ops::{
+            bitwise_and, bitwise_not, bitwise_or, bitwise_xor, ones_complement, twos_complement,
+        },
+        conversion::convert_from_decimal,
+    };
 
     #[test]
     fn test_ones_complement() {
@@ -19,7 +23,6 @@ mod tests {
 
         assert_eq!(swapped, num);
     }
-
 
     #[test]
     fn test_twos_complement() {
@@ -73,4 +76,3 @@ mod tests {
         assert_eq!(not, num_a_notted);
     }
 }
-

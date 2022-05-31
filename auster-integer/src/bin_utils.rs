@@ -3,10 +3,7 @@ pub(crate) mod conversion {
 
     use super::bitwise_ops::twos_complement;
 
-    pub fn convert_from_decimal(
-        decimal: i128, 
-        pad: usize
-    ) -> Vec<u8> {
+    pub fn convert_from_decimal(decimal: i128, pad: usize) -> Vec<u8> {
         let mut remainders = Vec::<u8>::new();
 
         let mut dec_abs = i128::abs(decimal.clone()) as u128;
@@ -15,7 +12,7 @@ pub(crate) mod conversion {
 
         loop {
             qoutient = dec_abs / 2u128;
-            let remainder = dec_abs % 2u128;    
+            let remainder = dec_abs % 2u128;
             dec_abs = qoutient;
 
             remainders.push(remainder as u8);
@@ -23,7 +20,6 @@ pub(crate) mod conversion {
             if dec_abs == 0 {
                 break;
             }
-
         }
 
         pad_with_zeros(&mut remainders, pad);
@@ -37,7 +33,6 @@ pub(crate) mod conversion {
         remainders
     }
 
-    
     pub fn convert_to_decimal(bin_array: &Vec<u8>) -> i128 {
         let mut arr_clone = bin_array.clone();
 
@@ -49,14 +44,13 @@ pub(crate) mod conversion {
             fr = 1;
         }
 
-        let arr_u128 = bin_array.clone()
-                        .into_iter()
-                        .map(|x| x as u128)
-                        .collect::<Vec<u128>>();
+        let arr_u128 = bin_array
+            .clone()
+            .into_iter()
+            .map(|x| x as u128)
+            .collect::<Vec<u128>>();
 
-        for (i, j) in (fr..arr_u128.len())
-                        .zip((0..arr_u128.len() - 1).rev()) 
-        {   
+        for (i, j) in (fr..arr_u128.len()).zip((0..arr_u128.len() - 1).rev()) {
             let exp = 2u128.pow(j.try_into().unwrap());
             res += arr_u128[i] * exp;
         }
@@ -69,7 +63,7 @@ pub(crate) mod conversion {
 
         ret
     }
-    
+
     pub fn make_zero(size: usize) -> Vec<u8> {
         vec![0u8; size]
     }
@@ -77,11 +71,7 @@ pub(crate) mod conversion {
     pub fn make_one(size: usize) -> Vec<u8> {
         vec![1u8; size]
     }
-
-
-
 }
-
 
 pub(crate) mod bitwise_ops {
     use crate::utils::math::flip_one;
@@ -101,80 +91,73 @@ pub(crate) mod bitwise_ops {
     }
 
     pub fn ones_complement(binary_array: &mut Vec<u8>) {
-        (0..binary_array.len())
-            .for_each(|u| flip_one(u, binary_array));
+        (0..binary_array.len()).for_each(|u| flip_one(u, binary_array));
     }
 
-    pub fn bitwise_and(
-            array_a: &Vec<u8>,
-            array_b: &Vec<u8>
-        ) -> Vec<u8>
-    {
-        array_a.iter()
-                .zip(array_b.iter())
-                .map(|(a, b)| a & b)
-                .collect::<Vec<u8>>()        
-   }
+    pub fn bitwise_and(array_a: &Vec<u8>, array_b: &Vec<u8>) -> Vec<u8> {
+        array_a
+            .iter()
+            .zip(array_b.iter())
+            .map(|(a, b)| a & b)
+            .collect::<Vec<u8>>()
+    }
 
-   pub fn bitwise_or(
-            array_a: &Vec<u8>,
-            array_b: &Vec<u8>
-        ) -> Vec<u8>
-    {
-        array_a.iter()
-                .zip(array_b.iter())
-                .map(|(a, b)| a | b)
-                .collect::<Vec<u8>>()        
-   }
+    pub fn bitwise_or(array_a: &Vec<u8>, array_b: &Vec<u8>) -> Vec<u8> {
+        array_a
+            .iter()
+            .zip(array_b.iter())
+            .map(|(a, b)| a | b)
+            .collect::<Vec<u8>>()
+    }
 
-   pub fn bitwise_xor(
-            array_a: &Vec<u8>,
-            array_b: &Vec<u8>
-        ) -> Vec<u8>
-    {
-        array_a.iter()
-                .zip(array_b.iter())
-                .map(|(a, b)| a ^ b)
-                .collect::<Vec<u8>>()        
-   }
+    pub fn bitwise_xor(array_a: &Vec<u8>, array_b: &Vec<u8>) -> Vec<u8> {
+        array_a
+            .iter()
+            .zip(array_b.iter())
+            .map(|(a, b)| a ^ b)
+            .collect::<Vec<u8>>()
+    }
 
-   pub fn bitwise_not(binary_array: &mut Vec<u8>) {
-        (0..binary_array.len())
-            .for_each(|u| flip_one(u, binary_array));
-   }
+    pub fn bitwise_not(binary_array: &mut Vec<u8>) {
+        (0..binary_array.len()).for_each(|u| flip_one(u, binary_array));
+    }
 
-   pub fn left_shift(binary_array: &mut Vec<u8>, num: usize) {
+    pub fn left_shift(binary_array: &mut Vec<u8>, num: usize) {
         binary_array
-                .clone()
-                .iter_mut()
-                .enumerate()
-                .filter(|(i, u)| *i > num)
-                .map(|(i, x)| x.clone())
-                .chain(vec![0u8; num].into_iter())
-                .enumerate()
-                .map(|(i, x)| { binary_array[i] = x });
+            .clone()
+            .iter_mut()
+            .enumerate()
+            .filter(|(i, u)| *i > num)
+            .map(|(i, x)| x.clone())
+            .chain(vec![0u8; num].into_iter())
+            .enumerate()
+            .map(|(i, x)| binary_array[i] = x);
+    }
 
-   }
-
-   pub fn right_shift(binary_array: &mut Vec<u8>, num: usize) {
-    let len = binary_array.len();
-    binary_array
+    pub fn right_shift(binary_array: &mut Vec<u8>, num: usize) {
+        let len = binary_array.len();
+        binary_array
             .clone()
             .into_iter()
             .chain(vec![0u8; num].into_iter())
             .enumerate()
-            .filter(|(i, u)| *i <  len - num)
+            .filter(|(i, u)| *i < len - num)
             .map(|(i, x)| x.clone())
             .enumerate()
-            .map(|(i, x)| { binary_array[i] = x });
-
-}
+            .map(|(i, x)| binary_array[i] = x);
+    }
 }
 
 pub(crate) mod arithmetic_ops {
-    use crate::utils::{gen::{get_element_or_zero, pad_with_zeros}, math::rep_single};
+    use crate::utils::{
+        gen::{get_element_or_zero, pad_with_zeros},
+        math::rep_single,
+    };
 
-    use super::{conversion::{make_zero, make_one}, bitwise_ops::{left_shift, bitwise_and, right_shift}};
+    use super::{
+        bitwise_ops::{bitwise_and, left_shift, right_shift},
+        conversion::{make_one, make_zero},
+    };
 
     pub enum CompareOp {
         GreaterThanEq,
@@ -202,7 +185,7 @@ pub(crate) mod arithmetic_ops {
                 true => {
                     val %= 2;
                     1
-                },
+                }
                 false => 0,
             };
 
@@ -211,17 +194,16 @@ pub(crate) mod arithmetic_ops {
             ai -= 1;
             bi -= 1;
 
-            if ai == 0 || bi == 0 {break;}
+            if ai == 0 || bi == 0 {
+                break;
+            }
         }
 
         pad_with_zeros(&mut res, pad);
 
         res.reverse();
 
-
         res
-
-
     }
 
     pub fn binary_subtract(a: &Vec<u8>, b: &Vec<u8>, pad: usize) -> Vec<u8> {
@@ -231,8 +213,6 @@ pub(crate) mod arithmetic_ops {
 
         binary_add(a, &b_clone, pad)
     }
-
-    
 
     pub fn binary_multipy(a: &Vec<u8>, b: &Vec<u8>, pad: usize) -> Vec<u8> {
         let mut sums: Vec<Vec<u8>> = vec![];
@@ -246,23 +226,18 @@ pub(crate) mod arithmetic_ops {
             } else {
                 let mut a_clone = a.clone();
                 super::bitwise_ops::left_shift(&mut a_clone, i);
-                sums.push(a_clone);            
+                sums.push(a_clone);
             }
         }
 
         let mut res = zeros.clone();
 
-        sums.iter().for_each(|x| { res = binary_add(&res, x, pad) } );
+        sums.iter().for_each(|x| res = binary_add(&res, x, pad));
 
         res
-
     }
 
-    pub fn binary_divide(
-        n: &Vec<u8>, 
-        d: &Vec<u8>, 
-        pad: usize) -> (Vec<u8>, Vec<u8>) 
-    {
+    pub fn binary_divide(n: &Vec<u8>, d: &Vec<u8>, pad: usize) -> (Vec<u8>, Vec<u8>) {
         let mut q = make_zero(n.len());
         let mut r = make_zero(n.len());
 
@@ -281,7 +256,9 @@ pub(crate) mod arithmetic_ops {
 
             i -= 1;
 
-            if i == 0 { break; }
+            if i == 0 {
+                break;
+            }
         }
 
         (q, r)
@@ -296,10 +273,7 @@ pub(crate) mod arithmetic_ops {
         let ones = make_one(p.len());
 
         while clone_p.iter().any(|x| x == &1) {
-            if bitwise_and(&clone_p, &ones)
-                        .iter()
-                        .all(|x| x == &1) 
-            {
+            if bitwise_and(&clone_p, &ones).iter().all(|x| x == &1) {
                 res = binary_multipy(&res, &clone_a, pad);
             }
 
@@ -309,7 +283,6 @@ pub(crate) mod arithmetic_ops {
         }
 
         res
-
     }
 
     pub fn compare(a: &Vec<u8>, b: &Vec<u8>, pad: usize, op: CompareOp) -> bool {
@@ -323,6 +296,5 @@ pub(crate) mod arithmetic_ops {
         };
 
         res
-
     }
 }
