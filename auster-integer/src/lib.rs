@@ -9,7 +9,8 @@ mod tests {
 
     use crate::bin_utils::{
         bitwise_ops::{
-            bitwise_and, bitwise_not, bitwise_or, bitwise_xor, ones_complement, twos_complement,
+            bitwise_and, bitwise_not, bitwise_or, bitwise_xor, 
+            ones_complement, twos_complement, right_shift, left_shift,
         },
         conversion::convert_from_decimal,
     };
@@ -74,5 +75,31 @@ mod tests {
         assert_eq!(or, nums_oreded);
         assert_eq!(xor, nums_xoreded);
         assert_eq!(not, num_a_notted);
+    }
+
+    #[test]
+    fn test_shift_operators() {
+        let array = vec![0u8, 1u8, 1u8, 1u8, 0u8];
+
+        let sl_1 =  vec![1u8, 1u8, 1u8, 0u8, 0u8];
+        let sl_2 =  vec![1u8, 1u8, 0u8, 0u8, 0u8];
+
+        let sr_1 = vec![0u8, 0u8, 1u8, 1u8, 1u8];
+        let sr_2 = vec![0u8, 0u8, 0u8, 1u8, 1u8];
+
+        let mut arr_tsl = array.clone();
+        let mut arr_tsr = array.clone();
+
+        left_shift(&mut arr_tsl, 1);
+        assert_eq!(arr_tsl, sl_1);
+        left_shift(&mut arr_tsl, 2);
+        assert_eq!(arr_tsl, sl_2);
+
+
+        right_shift(&mut arr_tsr, 1);
+        assert_eq!(arr_tsr, sr_1);
+        right_shift(&mut arr_tsr, 2);
+        assert_eq!(arr_tsr, sr_2);
+
     }
 }
