@@ -82,10 +82,10 @@ mod tests {
         let array = vec![0u8, 1u8, 1u8, 1u8, 0u8];
 
         let sl_1 =  vec![1u8, 1u8, 1u8, 0u8, 0u8];
-        let sl_2 =  vec![1u8, 1u8, 0u8, 0u8, 0u8];
+        let sl_2 =  vec![1u8, 0u8, 0u8, 0u8, 0u8];
 
         let sr_1 = vec![0u8, 0u8, 1u8, 1u8, 1u8];
-        let sr_2 = vec![0u8, 0u8, 0u8, 1u8, 1u8];
+        let sr_2 = vec![0u8, 0u8, 0u8, 0u8, 1u8];
 
         let mut arr_tsl = array.clone();
         let mut arr_tsr = array.clone();

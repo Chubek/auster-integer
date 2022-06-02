@@ -8,6 +8,10 @@ pub(crate) mod math {
         let last = v.len();
         v[last - 1] = rep;
     }
+
+    pub fn replace_with(v: &mut Vec<u8>, ind: usize, rep: u8) {
+        std::mem::replace(&mut v[ind], rep);
+    }
 }
 
 pub(crate) mod gen {

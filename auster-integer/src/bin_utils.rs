@@ -74,7 +74,7 @@ pub(crate) mod conversion {
 }
 
 pub(crate) mod bitwise_ops {
-    use crate::utils::math::flip_one;
+    use crate::utils::math::{flip_one, replace_with};
 
     pub fn twos_complement(binary_arry: &mut Vec<u8>) {
         let mut switch = false;
@@ -127,24 +127,23 @@ pub(crate) mod bitwise_ops {
             .clone()
             .iter_mut()
             .enumerate()
-            .filter(|(i, u)| *i > num)
+            .filter(|(i, _)| *i > num - 1)
             .map(|(i, x)| x.clone())
             .chain(vec![0u8; num].into_iter())
             .enumerate()
-            .map(|(i, x)| binary_array[i] = x);
+            .for_each(|(i, x)| replace_with(binary_array, i, x));
     }
 
     pub fn right_shift(binary_array: &mut Vec<u8>, num: usize) {
         let len = binary_array.len();
-        binary_array
-            .clone()
+        let zeroes = vec![0u8; num];
+        let bin_vec = vec![zeroes, binary_array.clone()];
+        bin_vec
             .into_iter()
-            .chain(vec![0u8; num].into_iter())
+            .flatten()
             .enumerate()
-            .filter(|(i, u)| *i < len - num)
-            .map(|(i, x)| x.clone())
-            .enumerate()
-            .map(|(i, x)| binary_array[i] = x);
+            .filter(|(i, _)| *i >= num && *i < len)
+            .for_each(|(i, x)| replace_with(binary_array, i, x));
     }
 }
 
